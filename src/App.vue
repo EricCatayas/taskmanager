@@ -9,7 +9,6 @@
 <script>
 import TaskManager from './components/TaskManager.vue';
 import TaskForm from './components/TaskForm.vue';
- import bootstrap from 'bootstrap';
 
 
 export default {
