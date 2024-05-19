@@ -9,14 +9,19 @@
                   <div class="col-auto hover-disappear">
                       <h6 class="category">{{ task.status }}</h6>                                
                   </div>
+                  <div class="col-auto">
+                    <button v-if="task.status === 'completed'" class="delete-btn category btn btn-danger btn-sm text-white" type="button" @click="deleteTask(task.id)">Delete</button>
+                    <button v-else-if="task.status === 'pending'" class="completed-btn category btn btn-success btn-sm text-white" type="button" @click="updateTask(task, 'in-progress')">In-Progress</button>                                            
+                    <button v-else class="completed-btn category btn btn-success btn-sm text-white" type="button" @click="updateTask(task, 'completed')">Completed</button>                                            
+                  </div>
               </div>
               <div class="content">
                   <div class="hover-disappear">
                       <h6 class="category">{{ task.status }}</h6>
                       <h5 class="title">{{ task.title }}</h5>
-                      <p>
-                          <small class="category">--/--/--</small>
-                      </p>
+                      <!-- <p>
+                          <small class="category"{task.date}</small>
+                      </p> -->
                   </div>
               </div>
           </div>
@@ -29,7 +34,7 @@
 
 <script>
   
-  import { TaskService } from '@/services/TaskService';
+  import { getAllAsync, createAsync, updateAsync, deleteAsync } from '@/services/TaskService';
   import TaskForm from './TaskForm.vue';
 
   export default {
@@ -48,23 +53,44 @@
     methods: {
       async loadTasks() {
         try {
-          var taskService = new TaskService();
-          this.tasks = await taskService.getAllAsync();
+          var result = await getAllAsync();
+          this.tasks = result;
+
         } catch (error) {
           console.error('Error loading tasks:', error);
         }
       },
       async createAsync(task) {
         try{
-          var taskService = new TaskService();
-          await taskService.createAsync(task);
-          // TODO: send post request
 
-          this.tasks = await taskService.getAllAsync();
+          await createAsync(task);
+          this.refreshPage();
+
         } catch (error) {
-          console.error('Error loading tasks:', error);
+          console.alert('Error creating tasks', error);
         }
-      }
+      },
+      async updateTask(task, status) {
+        try{
+
+          task.status = status;
+          var updated = await updateAsync(task);
+
+          this.refreshPage();
+        } catch (error) {
+          console.alert('Error updating task', error);
+        }
+      },
+      async deleteTask(taskId) {
+
+        await deleteAsync(taskId);
+        
+        this.refreshPage()
+
+      },
+      refreshPage() {
+        window.location.reload();
+      },
     }
   }
 </script>
