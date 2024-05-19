@@ -1,33 +1,101 @@
 
+  export async function getAllAsync() {    
 
-export class TaskService {
-  constructor(){
-    this.tasks = [
-      { id: 1, title: "Task 1", status: "completed", color: "blue"},
-      { id: 2, title: "Task 2", status: "pending", color: "green"},
-      { id: 3, title: "Task 3", status: "in-progress", color: "yellow"},
-      { id: 4, title: "Task 3", status: "in-progress", color: "purple"},
-    ];
+    const url = `${process.env.VUE_APP_API_URL}/api/tasks`;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      console.log("Response:", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle the error or rethrow it if you want to handle it elsewhere
+      throw error;
+    }
   }
+  
 
-  async GetAllAsync() {    
-    //fetch request
-
-    return this.tasks;
-  }
-
-  async CreateAsync(task){
-    //fetch request
-
-    this.tasks.push(task);    
+  export async function createAsync(task){
+    
+    fetch(`${process.env.VUE_APP_API_URL}/api/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any other headers as needed
+      },
+      body: JSON.stringify(task),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Created new task:", data);
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error creating task:", error);
+      });
 
     return;
   }
   
-  async DeleteAsync(taskId){
-    //fetch request
+  export async function updateAsync(task){
+    
+    fetch(`${process.env.VUE_APP_API_URL}/api/tasks/${task.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any other headers as needed
+      },
+      body: JSON.stringify(task),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Updated task:", data);
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error creating task:", error);
+      });
 
     return;
   }
-}
+  
+  export async function deleteAsync(taskId){
+    
+    fetch(`${process.env.VUE_APP_API_URL}/api/tasks/${taskId}`, {
+      method: "DELETE"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Deleted task:");
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error creating task:", error);
+      });
+
+    return;
+  }
+
 
