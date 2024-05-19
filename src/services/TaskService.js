@@ -1,24 +1,30 @@
 
 
 export class TaskService {
-  async GetTasks() {
-    var tasks = [
-      { id: 1, title: "Task 1", status: "completed" },
-      { id: 2, title: "Task 2", status: "pending" },
-      { id: 3, title: "Task 3", status: "in-progress" },
+  constructor(){
+    this.tasks = [
+      { id: 1, title: "Task 1", status: "completed", color: "blue"},
+      { id: 2, title: "Task 2", status: "pending", color: "green"},
+      { id: 3, title: "Task 3", status: "in-progress", color: "yellow"},
+      { id: 4, title: "Task 3", status: "in-progress", color: "purple"},
     ];
-    //fetch request
-
-    return tasks;
   }
 
-  async CreateTask(task){
+  async GetAllAsync() {    
     //fetch request
+
+    return this.tasks;
+  }
+
+  async CreateAsync(task){
+    //fetch request
+
+    this.tasks.push(task);    
 
     return;
   }
   
-  async DeleteTask(taskId){
+  async DeleteAsync(taskId){
     //fetch request
 
     return;
