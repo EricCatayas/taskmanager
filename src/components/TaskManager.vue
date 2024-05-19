@@ -1,39 +1,72 @@
 <template>
-  <div class="task-manager">
-    <h2>Task Manager</h2>
-    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
-      <div v-for="task in tasks" :key="task.id" class="col content-card">
-        <div class="card card-just-text" data-background="color" :data-color="task.color" data-radius="none">
-            <div class="row justify-content-between">
-                <div class="col-auto hover-disappear">
-                    <h6 class="category">{{ task.status }}</h6>                                
-                </div>
-            </div>
-            <div class="content">
-                <div class="hover-disappear">
-                    <h6 class="category">{{ task.status }}</h6>
-                    <h5 class="title">{{ task.title }}</h5>
-                    <p>
-                        <small class="category">--/--/--</small>
-                    </p>
-                </div>
-            </div>
+  <section class="container">
+    <div class="task-manager">
+      <h2>Task Manager</h2>
+      <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
+        <div v-for="task in tasks" :key="task.id" class="col content-card">
+          <div class="card card-just-text" data-background="color" :data-color="task.color" data-radius="none">
+              <div class="row justify-content-between">
+                  <div class="col-auto hover-disappear">
+                      <h6 class="category">{{ task.status }}</h6>                                
+                  </div>
+              </div>
+              <div class="content">
+                  <div class="hover-disappear">
+                      <h6 class="category">{{ task.status }}</h6>
+                      <h5 class="title">{{ task.title }}</h5>
+                      <p>
+                          <small class="category">--/--/--</small>
+                      </p>
+                  </div>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </div>  
+    <TaskForm :addTask="createAsync"/>
+  </section>
 </template>
 
 <script>
-    export default {
-        name: 'TaskManager',
-        props: {
-            tasks: {
-                type: Array,
-                required: true
-            }
+  
+  import { TaskService } from '@/services/TaskService';
+  import TaskForm from './TaskForm.vue';
+
+  export default {
+    name: 'TaskManager',
+    components: {
+      TaskForm
+    },
+    data() {
+      return {
+        tasks: []
+      };
+    },
+    created() {
+        this.loadTasks();
+    },
+    methods: {
+      async loadTasks() {
+        try {
+          var taskService = new TaskService();
+          this.tasks = await taskService.getAllAsync();
+        } catch (error) {
+          console.error('Error loading tasks:', error);
         }
+      },
+      async createAsync(task) {
+        try{
+          var taskService = new TaskService();
+          await taskService.createAsync(task);
+          // TODO: send post request
+
+          this.tasks = await taskService.getAllAsync();
+        } catch (error) {
+          console.error('Error loading tasks:', error);
+        }
+      }
     }
+  }
 </script>
 
 <style scoped>

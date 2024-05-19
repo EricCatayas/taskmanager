@@ -2,22 +2,20 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <TaskManager/>
-    <TaskForm/>
   </div>
 </template>
 
 <script>
 import TaskManager from './components/TaskManager.vue';
-import TaskForm from './components/TaskForm.vue';
 
 
 export default {
   name: 'App',
   components: {
-    TaskManager,
-    TaskForm
+    TaskManager
   }
 }
+
 </script>
 
 <style>
