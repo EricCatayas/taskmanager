@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container p-5">
     <div class="task-manager">
       <h2>Task Manager</h2>
       <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
