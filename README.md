@@ -1,4 +1,6 @@
 # taskmanager
+## Preview
+![Home](./public/TaskManager-SC.jpeg)
 
 ## Project setup
 ```
