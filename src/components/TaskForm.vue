@@ -1,7 +1,7 @@
 <template>
   <div class="task-form">
     <h2>Add a New Task</h2>
-    <form @submit.prevent="addTask">
+    <form @submit.prevent="submit">
       <div>
         <label for="title">Task Title:</label>
         <input type="text" v-model="newTask.title" id="title" required />
@@ -14,26 +14,47 @@
           <option value="completed">Completed</option>
         </select>
       </div>
+      <div>
+        <label for="color">Color:</label>
+        <select v-model="newTask.color" id="color" required>
+          <option value="yellow">Yellow</option>
+          <option value="blue">Blue</option>
+          <option value="purple">Purple</option>
+          <option value="orange">Orange</option>
+          <option value="pink">Pink</option>
+          <option value="grey">Grey</option>
+        </select>
+      </div>
       <button type="submit">Add Task</button>
     </form>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'TaskForm',
   data() {
     return {
       newTask: {
         title: '',
-        status: 'pending'
+        status: 'pending',
+        color: 'yellow'
       }
     }
   },
+  props: {
+    addTask: {
+      type: Function,
+      required: true
+    }
+  },
   methods: {
-    addTask() {
-      this.$emit('add-task', this.newTask)
-      this.newTask = { title: '', status: 'pending' }
+    submit() {
+      this.addTask(this.newTask);
+      this.newTask.title = '';
+      this.newTask.status = 'pending';
+      this.newTask.color = 'yellow';
     }
   }
 }
