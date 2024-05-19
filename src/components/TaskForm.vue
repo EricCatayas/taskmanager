@@ -39,7 +39,7 @@ export default {
       newTask: {
         title: '',
         status: 'pending',
-        color: ''
+        color: 'yellow'
       }
     }
   },
